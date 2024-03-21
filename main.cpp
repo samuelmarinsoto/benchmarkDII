@@ -9,7 +9,7 @@ using namespace std;
 using namespace chrono;
 
 // Function prototypes
-long long linearSearch(const vector<int>& arr, int target);
+long long maxElement(const vector<int>& arr);
 long long quadraticSearch(const vector<int>& arr, int target);
 long long linearLogarithmicSearch(const vector<int>& arr, int target);
 long long logarithmicSearch(const vector<int>& arr, int target);
@@ -19,7 +19,7 @@ int main() {
     ofstream outputFile;
     
     // Open output files for each complexity tier
-    outputFile.open("linear.csv");
+    outputFile.open("max_element.csv");
     outputFile << "ArraySize,TimeTaken(ns)\n";
     outputFile.close();
     
@@ -50,16 +50,15 @@ int main() {
         uniform_int_distribution<> dis(1, 1000000);
         generate(arr.begin(), arr.end(), [&]() { return dis(gen); });
 
-        // Target value (random)
-        int target = arr.back(); // Choose last element as target
-
         // Benchmark each algorithm and write results to respective CSV files
         auto start = high_resolution_clock::now();
-        long long result = linearSearch(arr, target);
+        long long result = maxElement(arr);
         auto stop = high_resolution_clock::now();
-        outputFile.open("linear.csv", ios::app);
+        outputFile.open("max_element.csv", ios::app);
         outputFile << size << "," << duration_cast<nanoseconds>(stop - start).count() << endl;
         outputFile.close();
+
+        int target = arr.back(); // Choose last element as target
 
         start = high_resolution_clock::now();
         result = quadraticSearch(arr, target);
@@ -95,14 +94,10 @@ int main() {
     return 0;
 }
 
-// Linear search (O(n))
-long long linearSearch(const vector<int>& arr, int target) {
+// Max element search (O(n))
+long long maxElement(const vector<int>& arr) {
     auto start = high_resolution_clock::now();
-    for (int num : arr) {
-        if (num == target) {
-            break;
-        }
-    }
+    int maxValue = *max_element(arr.begin(), arr.end());
     auto stop = high_resolution_clock::now();
     return duration_cast<nanoseconds>(stop - start).count();
 }
