@@ -8,7 +8,7 @@ EXEC = benchmark
 all: $(EXEC)
 
 $(EXEC): $(SRC)
-	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $<
+	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $(SRC)
 
 clean:
 	rm -f $(EXEC)
